@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  # ===================================================================
+  # SERVICIO DE BASE DE DATOS: MONGODB
+  # ===================================================================
+  gourmetconnect-db:
+    image: mongodb/mongodb-community-server:8.0.26-ubi8-slim
+    container_name: gourmetconnect-db
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      # Definición de credenciales de administrador para la inicialización
+      MONGO_INITDB_ROOT_USERNAME: "admin"
+      MONGO_INITDB_ROOT_PASSWORD: "SecurePass2026!"
+
+  # ===================================================================
+  # SERVICIO DEL BACKEND: SPRING BOOT API
+  # ===================================================================
+  gourmetconnect-api:
+    build: .
+    container_name: gourmetconnect-api-container
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      # Host de resolución interna en la red por defecto de Docker
+      MONGO_HOST: "gourmetconnect-db"
+      
+      # Cadenas de conexión seguras incluyendo las credenciales declaradas arriba
+      # (Se cubren los formatos de Spring Boot 3.x y Spring Boot 4.x en paralelo)
+      SPRING_MONGODB_URI: "mongodb://admin:SecurePass2026!@gourmetconnect-db:27017/gourmetconnect_db?authSource=admin"
+      SPRING_DATA_MONGODB_URI: "mongodb://admin:SecurePass2026!@gourmetconnect-db:27017/gourmetconnect_db?authSource=admin"
+    depends_on:
+      - gourmetconnect-db
+
+# ===================================================================
+# VOLÚMENES PERSISTENTES
+# ===================================================================
+volumes:
+  mongo_data:
+    driver: local
