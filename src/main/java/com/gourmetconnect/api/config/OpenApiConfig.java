@@ -11,33 +11,25 @@ import java.util.List;
 @Configuration
 public class OpenApiConfig {
 
-
     @Bean
     public OpenAPI customOpenAPI() {
-        // Forzamos a Swagger a reconocer el protocolo HTTPS del túnel público
-        Server ngrokServer = new Server()
-                .url("https://unloving-panhandle-winner.ngrok-free.dev")
-                .description("Servidor Remoto Seguro (ngrok)");
 
+        // 1. Servidor de Producción en la Nube (Azure VM)
+        Server azureServer = new Server()
+                .url("http://172.182.209.253:8080")
+                .description("Servidor de Producción (Azure VM)");
+
+        // 2. Servidor de Desarrollo Local (IntelliJ / Windows)
         Server localServer = new Server()
                 .url("http://localhost:8080")
-                .description("Servidor Local de Desarrollo");
+                .description("Entorno Local de Desarrollo");
 
+        // Retornamos la configuración unificada de OpenAPI
         return new OpenAPI()
                 .info(new Info()
                         .title("GourmetConnect API")
                         .version("1.0.0")
                         .description("Backend de red social gastronómica con soporte de geolocalización basada en MongoDB."))
-                .servers(List.of(ngrokServer, localServer)); // Inyectamos ambos servidores
+                .servers(List.of(azureServer, localServer));
     }
-
-    /*@Bean
-    public OpenAPI customOpenAPI() {
-        return new OpenAPI()
-                .info(new Info()
-                        .title("GourmetConnect API")
-                        .version("1.0.0")
-                        .description("Backend de red social gastronómica con soporte de geolocalización basada en MongoDB."));
-    }*/
-
 }

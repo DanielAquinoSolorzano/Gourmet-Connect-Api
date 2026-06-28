@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   # ===================================================================
-  # SERVICIO DE BASE DE DATOS: MONGODB
+  # CONTENEDOR DE BASE DE DATOS
   # ===================================================================
   gourmetconnect-db:
     image: mongodb/mongodb-community-server:8.0.26-ubi8-slim
@@ -13,12 +13,11 @@ services:
     volumes:
       - mongo_data:/data/db
     environment:
-      # Definición de credenciales de administrador para la inicialización
       MONGO_INITDB_ROOT_USERNAME: "admin"
       MONGO_INITDB_ROOT_PASSWORD: "SecurePass2026!"
 
   # ===================================================================
-  # SERVICIO DEL BACKEND: SPRING BOOT API
+  # CONTENEDOR DE LA API (SPRING BOOT)
   # ===================================================================
   gourmetconnect-api:
     build: .
@@ -27,19 +26,16 @@ services:
     ports:
       - "8080:8080"
     environment:
-      # Host de resolución interna en la red por defecto de Docker
-      MONGO_HOST: "gourmetconnect-db"
-      
-      # Cadenas de conexión seguras incluyendo las credenciales declaradas arriba
-      # (Se cubren los formatos de Spring Boot 3.x y Spring Boot 4.x en paralelo)
-      SPRING_MONGODB_URI: "mongodb://admin:SecurePass2026!@gourmetconnect-db:27017/gourmetconnect_db?authSource=admin"
-      SPRING_DATA_MONGODB_URI: "mongodb://admin:SecurePass2026!@gourmetconnect-db:27017/gourmetconnect_db?authSource=admin"
+      # Inyectamos exactamente las variables que el .properties está esperando leer
+      SPRING_DATA_MONGODB_HOST: "gourmetconnect-db"
+      SPRING_DATA_MONGODB_PORT: "27017"
+      SPRING_DATA_MONGODB_USERNAME: "admin"
+      SPRING_DATA_MONGODB_PASSWORD: "SecurePass2026!"
+      SPRING_DATA_MONGODB_DATABASE: "gourmetconnect"
+      SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: "admin"
     depends_on:
       - gourmetconnect-db
 
-# ===================================================================
-# VOLÚMENES PERSISTENTES
-# ===================================================================
 volumes:
   mongo_data:
     driver: local
