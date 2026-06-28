@@ -15,9 +15,9 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
 
         // 1. Servidor de Producción en la Nube (Azure VM)
-        Server azureServer = new Server()
-                .url("http://172.182.209.253:8080")
-                .description("Servidor de Producción (Azure VM)");
+        Server renderServer = new Server()
+                .url("https://gourmetconnect-api.onrender.com")
+                .description("Servidor de Producción (Render)");
 
         // 2. Servidor de Desarrollo Local (IntelliJ / Windows)
         Server localServer = new Server()
