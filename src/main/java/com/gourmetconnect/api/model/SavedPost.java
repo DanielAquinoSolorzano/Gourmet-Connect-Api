@@ -15,11 +15,11 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "saved_items")
+@Document(collection = "saved_posts")
 @CompoundIndexes({
     @CompoundIndex(name = "user_post_idx", def = "{'user_id': 1, 'post_id': 1}", unique = true)
 })
-public class SavedItem {
+public class SavedPost {
 
     @Id
     private String id;

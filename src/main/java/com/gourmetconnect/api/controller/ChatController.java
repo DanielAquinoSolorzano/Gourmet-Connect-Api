@@ -1,7 +1,9 @@
 package com.gourmetconnect.api.controller;
 
 import com.gourmetconnect.api.dto.CreateChatDTO;
+import com.gourmetconnect.api.dto.SendMessageDTO;
 import com.gourmetconnect.api.model.Chat;
+import com.gourmetconnect.api.model.Message;
 import com.gourmetconnect.api.service.ChatService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,8 +30,23 @@ public class ChatController {
         Chat chat = new Chat();
         chat.setParticipants(dto.getParticipants());
         chat.setGroup(dto.isGroup());
-        chat.setCreatedAt(LocalDateTime.now());
+        chat.setLastMessageAt(LocalDateTime.now());
         return ResponseEntity.status(HttpStatus.CREATED).body(chatService.createChat(chat));
+    }
+
+    @PostMapping("/{chatId}/messages")
+    @Operation(summary = "Enviar mensaje en un chat")
+    public ResponseEntity<Chat> sendMessage(@PathVariable String chatId, @RequestBody SendMessageDTO dto) {
+        Message message = new Message();
+        message.setSenderId(dto.getSenderId());
+        message.setText(dto.getText());
+        message.setSentAt(LocalDateTime.now());
+
+        Chat updatedChat = chatService.sendMessage(chatId, message);
+        if (updatedChat != null) {
+            return ResponseEntity.ok(updatedChat);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/{id}")

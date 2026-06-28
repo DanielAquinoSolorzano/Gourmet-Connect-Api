@@ -21,16 +21,14 @@ public class Chat {
     @Id
     private String id;
 
+    @Indexed
     private List<String> participants = new ArrayList<>();
+
+    private List<Message> messages = new ArrayList<>();
+
+    @Field("last_message_at")
+    private LocalDateTime lastMessageAt;
 
     @Field("is_group")
     private boolean isGroup = false;
-
-    @Indexed
-    @Field("created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    @Indexed
-    @Field("last_message_at")
-    private LocalDateTime lastMessageAt;
 }

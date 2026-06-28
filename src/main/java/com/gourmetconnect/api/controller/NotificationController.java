@@ -27,11 +27,11 @@ public class NotificationController {
     public ResponseEntity<Notification> createNotification(@RequestBody NotificationDTO dto) {
         Notification notification = new Notification();
         notification.setRecipientId(dto.getRecipientId());
+        notification.setSenderId(dto.getSenderId());
         notification.setType(dto.getType());
-        notification.setContent(dto.getContent());
+        notification.setPostId(dto.getPostId());
         notification.setRead(false);
         notification.setCreatedAt(LocalDateTime.now());
-        notification.setExpiresAt(dto.getExpiresAt());
         return ResponseEntity.status(HttpStatus.CREATED).body(notificationService.createNotification(notification));
     }
 

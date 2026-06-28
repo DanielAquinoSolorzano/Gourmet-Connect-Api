@@ -3,7 +3,7 @@ package com.gourmetconnect.api.dto;
 import lombok.Data;
 
 @Data
-public class SaveItemDTO {
+public class SavePostDTO {
     private String userId;
     private String postId;
     private String collectionName;

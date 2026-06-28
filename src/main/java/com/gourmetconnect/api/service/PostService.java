@@ -25,8 +25,8 @@ public class PostService {
         return postRepository.findAllByOrderByCreatedAtDesc();
     }
 
-    public List<Post> getUserPosts(String userId) {
-        return postRepository.findByUserIdOrderByCreatedAtDesc(userId);
+    public List<Post> getUserPosts(String authorId) {
+        return postRepository.findByAuthorIdOrderByCreatedAtDesc(authorId);
     }
 
     public Post updatePost(String id, Post post) {

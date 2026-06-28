@@ -10,8 +10,18 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ChatService {
-
     private final ChatRepository chatRepository;
+
+    public Chat sendMessage(String chatId, com.gourmetconnect.api.model.Message message) {
+        Optional<Chat> chatOpt = chatRepository.findById(chatId);
+        if (chatOpt.isPresent()) {
+            Chat chat = chatOpt.get();
+            chat.getMessages().add(message);
+            chat.setLastMessageAt(message.getSentAt());
+            return chatRepository.save(chat);
+        }
+        return null;
+    }
 
     public Chat createChat(Chat chat) {
         return chatRepository.save(chat);

@@ -26,9 +26,10 @@ public class PostController {
     @Operation(summary = "Crear nuevo post")
     public ResponseEntity<Post> createPost(@RequestBody CreatePostDTO dto) {
         Post post = new Post();
-        post.setUserId(dto.getUserId());
+        post.setAuthorId(dto.getAuthorId());
+        post.setType(dto.getType());
         post.setContent(dto.getContent());
-        post.setMediaUrl(dto.getMediaUrl());
+        post.setLocation(dto.getLocation());
         post.setCreatedAt(LocalDateTime.now());
         post.setUpdatedAt(LocalDateTime.now());
         return ResponseEntity.status(HttpStatus.CREATED).body(postService.createPost(post));
@@ -48,10 +49,10 @@ public class PostController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/user/{authorId}")
     @Operation(summary = "Obtener posts de un usuario")
-    public ResponseEntity<List<Post>> getUserPosts(@PathVariable String userId) {
-        return ResponseEntity.ok(postService.getUserPosts(userId));
+    public ResponseEntity<List<Post>> getUserPosts(@PathVariable String authorId) {
+        return ResponseEntity.ok(postService.getUserPosts(authorId));
     }
 
     @PutMapping("/{id}")

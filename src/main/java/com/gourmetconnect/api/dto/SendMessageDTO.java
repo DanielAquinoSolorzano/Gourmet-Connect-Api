@@ -3,8 +3,7 @@ package com.gourmetconnect.api.dto;
 import lombok.Data;
 
 @Data
-public class CreateMessageDTO {
-    private String chatId;
+public class SendMessageDTO {
     private String senderId;
-    private String content;
+    private String text;
 }

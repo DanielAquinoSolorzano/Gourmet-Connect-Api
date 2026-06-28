@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -13,30 +15,25 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "notifications")
-public class Notification {
+@Document(collection = "relationships")
+@CompoundIndexes({
+    @CompoundIndex(name = "follower_followed_idx", def = "{'follower_id': 1, 'followed_id': 1}", unique = true)
+})
+public class Relationship {
 
     @Id
     private String id;
 
     @Indexed
-    @Field("recipient_id")
-    private String recipientId;
+    @Field("follower_id")
+    private String followerId;
 
     @Indexed
-    @Field("sender_id")
-    private String senderId;
+    @Field("followed_id")
+    private String followedId;
 
-    private String type; // message, etc
+    private String status;
 
-    @Indexed
-    @Field("post_id")
-    private String postId;
-
-    @Field("is_read")
-    private boolean isRead = false;
-
-    @Indexed
     @Field("created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 }
