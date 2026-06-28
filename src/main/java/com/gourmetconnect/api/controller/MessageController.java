@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/messages")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 @Tag(name = "Messages", description = "Endpoints para gestionar mensajes")
 public class MessageController {

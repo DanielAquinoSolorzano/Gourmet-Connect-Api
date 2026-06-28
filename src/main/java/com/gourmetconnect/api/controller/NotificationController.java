@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/notifications")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 @Tag(name = "Notifications", description = "Endpoints para gestionar notificaciones")
 public class NotificationController {

@@ -19,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 @Tag(name = "Usuarios", description = "Endpoints para la gestión, registro y geolocalización de usuarios en GourmetConnect")
 public class UserController {

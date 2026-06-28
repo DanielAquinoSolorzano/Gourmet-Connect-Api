@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/chats")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 @Tag(name = "Chats", description = "Endpoints para gestionar conversaciones")
 public class ChatController {

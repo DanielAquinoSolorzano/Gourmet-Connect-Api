@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/follows")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequiredArgsConstructor
 @Tag(name = "Follows", description = "Endpoints para gestionar seguimientos entre usuarios")
 public class FollowController {
